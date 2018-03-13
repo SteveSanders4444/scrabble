@@ -52,12 +52,11 @@ board = board.upper()
 
 
 # quick check....
-'''
 if board in all_words:
     print(board + ' in all_words')
 else:
     print(board + ' not in all_words')
-'''
+
 
 
 # STEP 3: for every combination of inputted letters and every subset, return list of ALL matching all_words
@@ -77,8 +76,8 @@ for j in range(length+1):
     #perms = set(perms)  # to dedupe (creates sets {})
     permlist.append(perms)
 
-#print(permlist)
-#print(np.concatenate(permlist))
+print(permlist)
+print(np.concatenate(permlist))
 
 df = pd.DataFrame(np.concatenate(permlist))
 df.columns = ['word']
@@ -94,16 +93,16 @@ for i in range(len(df.word)):
 print(df)
 '''
 df['in_dic'] = df.word.isin(all_words)
-#print(df[df['in_dic']==True])
+print(df[df['in_dic']==True])
 
 df_realwords = df[df['in_dic']==True]
 df_realwords2 = df_realwords.drop_duplicates(subset='word', keep='first')  # drop any duplicate words
 df_realwords3 = df_realwords2.drop(columns=['in_dic'])
-#print(df_realwords3)
-#print(df_realwords3.shape[0])
+print(df_realwords3)
+print(df_realwords3.shape[0])
 #new_index = range(1,df_realwords3.shape[0])
 df_realwords4 = df_realwords3.reset_index(drop=True)
-#print(df_realwords4)
+print(df_realwords4)
 
 
 
@@ -119,16 +118,16 @@ word = ''
 score_list = []
 for i in range(0,df_realwords4.shape[0]):
     word = df_realwords4['word'].loc[i]
-#    print(word)
+    print(word)
     sum = 0
     for letter in word:
         sum += scores.get(letter.lower())
-#    print(sum)
+    print(sum)
     score_list.append(sum)
 
 score_list_column = pd.Series(score_list)
 df_realwords4.insert(loc=1, column='score', value=score_list_column)
-#print(df_realwords4)
+print(df_realwords4)
 
 
 
@@ -137,15 +136,8 @@ df_realwords4.insert(loc=1, column='score', value=score_list_column)
 # STEP 6. return words and scores in descending order of score
 
 result = df_realwords4.sort_values('score', ascending=False)
-#print(result)
+print(result)
 
-result_length = len(result)
-print(result_length)
-if result_length < 20:
-    loop_len = result_length
-else:
-    loop_len = 20
-
-print('Top Scores: ')
-for i in range(loop_len):
+print('Top 20 Scores: ')
+for i in range(20):
     print(result.score.iloc[i], ',', result.word.iloc[i])
