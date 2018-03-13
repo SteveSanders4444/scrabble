@@ -139,6 +139,13 @@ df_realwords4.insert(loc=1, column='score', value=score_list_column)
 result = df_realwords4.sort_values('score', ascending=False)
 #print(result)
 
-print('Top 20 Scores: ')
-for i in range(20):
+result_length = len(result)
+print(result_length)
+if result_length < 20:
+    loop_len = result_length
+else:
+    loop_len = 20
+
+print('Top Scores: ')
+for i in range(loop_len):
     print(result.score.iloc[i], ',', result.word.iloc[i])
